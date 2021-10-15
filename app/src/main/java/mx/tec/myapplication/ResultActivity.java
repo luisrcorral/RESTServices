@@ -22,6 +22,7 @@ import org.json.JSONObject;
 public class ResultActivity extends AppCompatActivity {
     TextView textviewCity;
     TextView textviewTemp;
+    TextView textViewDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         textviewCity  = findViewById(R.id.resultTextView);
         textviewTemp  = findViewById(R.id.tempTextView);
+        textViewDesc = findViewById(R.id.textView_desc);
         ImageView myImageView = findViewById(R.id.imageView);
 
         Intent intent = getIntent();
@@ -53,14 +55,16 @@ public class ResultActivity extends AppCompatActivity {
                         String city = "";
                         String temp = "";
                         String icon = "";
+                        String description = "";
                         try {
                             city = response.getString("name");
                             temp = response.getJSONObject("main").getString("feels_like");
                             icon = response.getJSONArray("weather").getJSONObject(0).getString("icon");
-
+                            description = response.getJSONArray("weather").getJSONObject(0).getString("description");
 
                             textviewCity.setText(city);
                             textviewTemp.setText(temp);
+                            textViewDesc.setText(description);
                             Glide.with(getApplicationContext()).load("http://openweathermap.org/img/w/" + icon + ".png").into(myImageView);
 
 
