@@ -41,7 +41,7 @@ public class ResultActivity extends AppCompatActivity {
                 "q=" + chosenCity + "&" +
                 "units=" + chosenUnits + "&" +
                 "mode=json&" +
-                "appid=798624fafafa92dfd9bb91e6b33d9f67";
+                "appid=";
 
 
         // Request a response from the provided URL.
