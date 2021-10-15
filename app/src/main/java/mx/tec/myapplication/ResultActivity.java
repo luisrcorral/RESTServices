@@ -35,7 +35,7 @@ public class ResultActivity extends AppCompatActivity {
         String chosenCity = intent.getStringExtra("city");
         String chosenUnits = intent.getStringExtra("units");
 
-        // Instantiate the Request Queue.
+        // 1) Instantiate the Request Queue.
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="https://api.openweathermap.org/data/2.5/weather?" +
                 "q=" + chosenCity + "&" +
@@ -44,7 +44,7 @@ public class ResultActivity extends AppCompatActivity {
                 "appid=";
 
 
-        // Request a response from the provided URL.
+        // 2) Request a response from the provided URL.
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     // If response = 200
@@ -55,16 +55,18 @@ public class ResultActivity extends AppCompatActivity {
                         String icon = "";
                         try {
                             city = response.getString("name");
-                            temp = response.getJSONObject("main").getString("temp");
+                            temp = response.getJSONObject("main").getString("feels_like");
+                            icon = response.getJSONArray("weather").getJSONObject(0).getString("icon");
+
+
                             textviewCity.setText(city);
                             textviewTemp.setText(temp);
-                            icon = response.getJSONArray("weather").getJSONObject(0).getString("icon");
                             Glide.with(getApplicationContext()).load("http://openweathermap.org/img/w/" + icon + ".png").into(myImageView);
 
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            textviewCity.setText("Unable to process the request");
+                            textviewCity.setText("Unable to process the request, due to a JSON exception");
                         }
 
                     }
@@ -72,12 +74,12 @@ public class ResultActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        textviewCity.setText("Unable to process the request");
+                        textviewCity.setText("Unable to process the request, due to a REST API error");
 
                     }
                 });
 
-        //Don't forget this one
+        //3 Don't forget this one
         queue.add(jsonObjectRequest);
 
     }
